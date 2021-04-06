@@ -1,0 +1,34 @@
+import collections
+
+
+class Solution:
+    def hasPath(self, maze, start, destination):
+        if not maze:
+            return -1
+        row = len(maze)
+        col = len(maze[0])
+        my_queue = collections.deque([start])
+        visited = {(start[0], start[1]): True}
+        dirs = [[0, 1], [0, -1], [-1, 0], [1, 0]]
+
+        while my_queue:
+            curr = my_queue.popleft()
+
+            if curr == destination:
+                return True
+
+            for dir in dirs:
+                x = curr[0]
+                y = curr[1]
+                while self.is_vaild(x + dir[0], y + dir[1], maze, row, col):
+                    x += dir[0]
+                    y += dir[1]
+
+                if (x, y) not in visited:
+                    visited[(x, y)] = True
+                    my_queue.append([x, y])
+
+        return False
+
+    def is_vaild(self, x, y, maze, row, col):
+        return 0 <= x < row and 0 <= y < col and maze[x][y] == 0
